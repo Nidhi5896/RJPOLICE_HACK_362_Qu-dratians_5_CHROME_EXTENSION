@@ -1,0 +1,70 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phone Number Validation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    input {
+      width: 300px;
+      padding: 8px;
+      margin-bottom: 16px;
+    }
+
+    button {
+      padding: 10px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Phone Number Validation</h1>
+  <label for="phoneNumber">Enter Phone Number:</label>
+  <input type="tel" id="phoneNumber" placeholder="e.g., +91 234567890" required>
+  <button onclick="validatePhoneNumber()">Validate</button>
+  <div id="result"></div>
+
+  <script>
+    async function validatePhoneNumber() {
+      const phoneNumber = document.getElementById('phoneNumber').value;
+
+      try {
+        const response = await fetch('http://localhost:3000/validatePhoneNumber', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ phoneNumber }),
+        });
+
+        const data = await response.json();
+
+        // Display validation result
+        document.getElementById('result').innerText = `Validation Result: ${data.isValid ? 'Valid' : 'Not Valid'}`;
+      } catch (error) {
+        console.error('Error validating phone number:', error.message);
+        document.getElementById('result').innerText = 'Error validating phone number';
+      }
+    }
+  </script>
+</body>
+</html>
